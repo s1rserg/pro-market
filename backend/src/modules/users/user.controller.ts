@@ -2,7 +2,7 @@ import { AuthRequest } from '~/libs/middleware/auth.middleware';
 import { NextFunction, Request, Response } from 'express';
 import { BaseController } from '~/libs/core/base-controller';
 import { userService } from './user.service';
-import { signInSchema, signUpSchema } from 'shared/src';
+import { signInRequestSchema, signUpRequestSchema } from 'shared/src';
 
 class UserController extends BaseController {
   public signUp = (req: Request, res: Response, next: NextFunction) =>
@@ -11,15 +11,15 @@ class UserController extends BaseController {
       res,
       next,
       async (req: Request, res: Response) => {
-        const { username, email, password } = req.body;
+        const { name, email, password } = req.body;
         const { user, jwtToken } = await userService.createUser(
-          username,
+          name,
           email,
           password
         );
         this.sendResponse(res, { user, jwtToken }, 201);
       },
-      signUpSchema
+      signUpRequestSchema
     );
 
   public signIn = (req: Request, res: Response, next: NextFunction) =>
@@ -32,7 +32,7 @@ class UserController extends BaseController {
         const { user, jwtToken } = await userService.signIn(email, password);
         this.sendResponse(res, { user, jwtToken }, 200);
       },
-      signInSchema
+      signInRequestSchema
     );
 
   public getAuthenticatedUser = (

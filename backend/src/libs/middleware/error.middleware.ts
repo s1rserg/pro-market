@@ -6,7 +6,6 @@ interface HttpError extends Error {
   errors?: unknown;
 }
 
- 
 const errorHandler = (
   error: HttpError,
   req: Request,
