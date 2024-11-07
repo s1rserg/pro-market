@@ -1,7 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import config from '../config/config';
 
 export class Token {
   private secretKey: string;
@@ -28,4 +26,4 @@ export class Token {
   }
 }
 
-export const token = new Token(process.env.SECRET_KEY || 'secret_key');
+export const token = new Token(config.secretKey);
