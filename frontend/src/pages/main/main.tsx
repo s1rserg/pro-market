@@ -1,24 +1,21 @@
-import { useLocation } from 'react-router-dom';
-import logoSrc from '~/assets/images/logo.svg';
+import { ListingsSearch } from './components/listings-search/listings-search';
 import styles from './styles.module.css';
-import { AppPath } from '~/common/enums/enums.js';
 
 const Main = (): JSX.Element => {
-  const { pathname } = useLocation();
-
   return (
     <main className={styles['container']}>
-      <section className={styles['auth-container']}>
-        <div className={styles['left-side']}>
-          <img alt="logo" className={styles['logo-wrapper']} src={logoSrc} />
-        </div>
-        <div className={styles['right-side']}>
-          <h3 className={styles['form-title']}>
-            {pathname === AppPath.SIGN_IN
-              ? 'Welcome back'
-              : 'Create an account'}
-          </h3>
-        </div>
+      <section className={styles['hero']}>
+        <h1 className={styles['hero-title']}>
+          Unlock the power of knowledge and <br /> expertise.
+        </h1>
+        <ListingsSearch
+          isLabelHidden
+          label="search"
+          placeholder="Search for skill"
+        />
+        <h3 className={styles['hero-subtitle']}>
+          Find the best skill-sharing sessions in one place.
+        </h3>
       </section>
     </main>
   );

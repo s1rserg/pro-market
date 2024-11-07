@@ -11,8 +11,8 @@ import { getValidClassNames } from '~/helpers/helpers';
 
 type Properties<T extends FieldValues> = {
   autoComplete?: string;
-  control: Control<T, null>;
-  errors: FieldErrors<T>;
+  control?: Control<T, null>;
+  errors?: FieldErrors<T>;
   isDisabled?: boolean;
   isLabelHidden?: boolean;
   isReadOnly?: boolean;
@@ -41,7 +41,7 @@ const Input = <T extends FieldValues>({
   type = 'text',
 }: Properties<T>): JSX.Element => {
   const { field } = useController({ control, name });
-  const error = errors[name]?.message;
+  const error = errors ? errors[name]?.message : undefined;
   const hasError = Boolean(error);
   const hasLeftIcon = Boolean(leftIcon);
   const hasRightIcon = Boolean(rightIcon);

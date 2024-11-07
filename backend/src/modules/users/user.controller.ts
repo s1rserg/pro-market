@@ -17,7 +17,7 @@ class UserController extends BaseController {
           email,
           password
         );
-        this.sendResponse(res, { user, jwtToken }, 201);
+        this.sendResponse(res, { user, token: jwtToken }, 201);
       },
       signUpRequestSchema
     );
@@ -30,7 +30,7 @@ class UserController extends BaseController {
       async (req: Request, res: Response) => {
         const { email, password } = req.body;
         const { user, jwtToken } = await userService.signIn(email, password);
-        this.sendResponse(res, { user, jwtToken }, 200);
+        this.sendResponse(res, { user, token: jwtToken }, 200);
       },
       signInRequestSchema
     );

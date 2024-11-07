@@ -8,3 +8,4 @@ export * from './loader/loader';
 export * from './app/app';
 export * from './popover/popover';
 export * from './avatar/avatar';
+export * from './search/search';
