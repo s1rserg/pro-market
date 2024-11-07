@@ -1,5 +1,5 @@
 import { BaseRepository } from '~/libs/core/base-repository';
-import User, { IUser } from './user.model';
+import { User, IUser } from './user.model';
 
 class UserRepository extends BaseRepository<IUser> {
   constructor() {
@@ -11,4 +11,4 @@ class UserRepository extends BaseRepository<IUser> {
   }
 }
 
-export const userRepository = new UserRepository();
+export { UserRepository };
