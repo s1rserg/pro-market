@@ -20,9 +20,9 @@
   cursor: pointer;
 }
 
-.header-popovers {
+.header-links {
   display: flex;
-  gap: 16px;
+  gap: 8px;
   align-items: center;
   justify-content: space-between;
 }

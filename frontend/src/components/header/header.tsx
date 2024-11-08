@@ -1,12 +1,14 @@
 import logoSrc from '~/assets/images/logo.svg';
 
-import { UserPopover } from './libs/components/components.js';
+import { HeaderLink, UserPopover } from './libs/components/components.js';
 import styles from './styles.module.css';
 import { useAppSelector, usePopover } from '~/hooks/hooks.js';
 import { AppPath } from '~/common/enums/enums.js';
 import { Avatar, NavLink } from '../components.js';
+import { useLocation } from 'react-router-dom';
 
 const Header = (): JSX.Element => {
+  const location = useLocation();
   const {
     isOpened: isUserOpened,
     onClose: onUserClose,
@@ -21,12 +23,20 @@ const Header = (): JSX.Element => {
 
   const { email, name } = authenticatedUser;
 
+  const currentPath = location.pathname;
+
   return (
     <header className={styles['header']}>
       <NavLink className={styles['logo-link'] as string} to={AppPath.ROOT}>
         <img alt="logo" className={styles['logo-img']} src={logoSrc} />
       </NavLink>
-      <div className={styles['header-popovers']}>
+      <div className={styles['header-links']}>
+        {currentPath != AppPath.SKILLS && (
+          <HeaderLink label="Browse Skills" link={AppPath.SKILLS} />
+        )}
+        {currentPath != AppPath.LISTINGS && (
+          <HeaderLink label="List Skills" link={AppPath.LISTINGS} />
+        )}
         <UserPopover
           email={email}
           isOpened={isUserOpened}

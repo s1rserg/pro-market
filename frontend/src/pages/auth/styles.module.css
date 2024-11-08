@@ -25,7 +25,9 @@
   background-image: url('~/assets/images/auth-background.jpg');
   background-repeat: no-repeat;
   background-position: left bottom;
-  background-size: 200% 100%;
+  background-size: cover;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('~/assets/images/auth-background.jpg');
 }
 
 .right-side {
@@ -38,6 +40,7 @@
   height: 120px;
   object-fit: contain;
   object-position: center;
+  filter: brightness(0) invert(1);
 }
 
 .form-title {
