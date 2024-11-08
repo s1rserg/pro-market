@@ -7,7 +7,7 @@ export abstract class BaseRepository<T extends Document> {
     return this.model.create(item);
   }
 
-  public async findById(id: string): Promise<T | null> {
+  public async find(id: string): Promise<T | null> {
     return this.model.findById(id).exec();
   }
 
@@ -15,11 +15,11 @@ export abstract class BaseRepository<T extends Document> {
     return this.model.find().exec();
   }
 
-  public async updateById(id: string, item: Partial<T>): Promise<T | null> {
+  public async update(id: string, item: Partial<T>): Promise<T | null> {
     return this.model.findByIdAndUpdate(id, item, { new: true }).exec();
   }
 
-  public async deleteById(id: string): Promise<T | null> {
+  public async delete(id: string): Promise<T | null> {
     return this.model.findByIdAndDelete(id).exec();
   }
 }

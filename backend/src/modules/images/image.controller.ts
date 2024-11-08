@@ -13,7 +13,7 @@ class ImageController extends BaseController {
         return;
       }
 
-      const image = await imageService.uploadImage(
+      const image = await imageService.upload(
         req.file.path,
         req.file.originalname
       );
@@ -22,9 +22,9 @@ class ImageController extends BaseController {
       this.sendResponse(res, { image }, 201);
     });
 
-  public getImageById = (req: Request, res: Response, next: NextFunction) =>
+  public getById = (req: Request, res: Response, next: NextFunction) =>
     this.handleRequest(req, res, next, async (req: Request, res: Response) => {
-      const image = await imageService.getImageById(req.params.id);
+      const image = await imageService.getById(req.params.id);
       if (!image) {
         this.sendResponse(res, { error: 'Image not found' }, 404);
         return;

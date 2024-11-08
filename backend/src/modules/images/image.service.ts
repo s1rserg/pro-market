@@ -15,7 +15,7 @@ const s3 = new S3({
 class ImageService {
   private imageRepository = new ImageRepository();
 
-  async uploadImage(filePath: string, fileName: string): Promise<IImage> {
+  async upload(filePath: string, fileName: string): Promise<IImage> {
     const fileStream = fs.createReadStream(filePath);
 
     const uploadParams = {
@@ -33,8 +33,8 @@ class ImageService {
     });
   }
 
-  async getImageById(id: string): Promise<IImage | null> {
-    return await this.imageRepository.findById(id);
+  async getById(id: string): Promise<IImage | null> {
+    return await this.imageRepository.find(id);
   }
 }
 

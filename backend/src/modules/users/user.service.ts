@@ -5,7 +5,7 @@ import { token } from '~/libs/token/token';
 class UserService {
   private userRepository = new UserRepository();
 
-  public async createUser(name: string, email: string, password: string) {
+  public async create(name: string, email: string, password: string) {
     if ((await this.userRepository.findByEmail(email)).length !== 0) {
       throw { status: 409, errors: 'This email is already registered' };
     }
@@ -25,8 +25,8 @@ class UserService {
     return { user: this.selectUserFields(user), jwtToken };
   }
 
-  public async getUserById(id: string) {
-    const user = await this.userRepository.findById(id);
+  public async getById(id: string) {
+    const user = await this.userRepository.find(id);
     return user ? this.selectUserFields(user) : null;
   }
 
