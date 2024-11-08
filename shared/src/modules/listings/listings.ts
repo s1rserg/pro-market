@@ -24,7 +24,7 @@ export const createListingRequestSchema = z.object({
 });
 
 export const createListingResponseSchema = createListingRequestSchema.extend({
-  _id: z.instanceof(Types.ObjectId),
+  id: z.instanceof(Types.ObjectId),
   createdAt: z.date(),
   updatedAt: z.date(),
 });

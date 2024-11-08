@@ -6,6 +6,12 @@ const ApiPath = {
   AUTHENTICATED_USER: '/authenticated-user',
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
+
+  // Listings routes
+  LISTINGS: '/listings',
+
+  // Images routes
+  IMAGES: '/images',
 } as const;
 
 export { ApiPath };
