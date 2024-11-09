@@ -1,11 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  fetchAllListings,
-  createListing,
-  updateListing,
-  deleteListing,
-  fetchListingById,
-} from './actions';
+import { getAll, create, update, deleteById, getById } from './actions';
 import { ListingResponseDto, ValueOf } from '~/common/types/types';
 import { DataStatus } from '~/common/enums/enums';
 import { notifyError } from '~/utils/notification/notification';
@@ -33,19 +27,19 @@ const initialState: ListingsState = {
 };
 
 const { reducer, actions, name } = createSlice({
-  name: 'listings',
+  name: 'skills',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchAllListings.pending, (state) => {
+      .addCase(getAll.pending, (state) => {
         state.status = DataStatus.PENDING;
       })
-      .addCase(fetchAllListings.fulfilled, (state, action) => {
+      .addCase(getAll.fulfilled, (state, action) => {
         state.listings = action.payload;
         state.status = DataStatus.SUCCESS;
       })
-      .addCase(fetchAllListings.rejected, (state, action) => {
+      .addCase(getAll.rejected, (state, action) => {
         state.status = DataStatus.ERROR;
         state.error = {
           code: action.error.code,
@@ -53,14 +47,14 @@ const { reducer, actions, name } = createSlice({
         };
         notifyError(action.error.message || 'Failed to fetch listings');
       })
-      .addCase(fetchListingById.pending, (state) => {
+      .addCase(getById.pending, (state) => {
         state.status = DataStatus.PENDING;
       })
-      .addCase(fetchListingById.fulfilled, (state, action) => {
+      .addCase(getById.fulfilled, (state, action) => {
         state.listing = action.payload;
         state.listingStatus = DataStatus.SUCCESS;
       })
-      .addCase(fetchListingById.rejected, (state, action) => {
+      .addCase(getById.rejected, (state, action) => {
         state.listingStatus = DataStatus.ERROR;
         state.error = {
           code: action.error.code,
@@ -68,14 +62,14 @@ const { reducer, actions, name } = createSlice({
         };
         notifyError(action.error.message || 'Failed to fetch listing');
       })
-      .addCase(createListing.pending, (state) => {
+      .addCase(create.pending, (state) => {
         state.listingCreateStatus = DataStatus.PENDING;
       })
-      .addCase(createListing.fulfilled, (state, action) => {
+      .addCase(create.fulfilled, (state, action) => {
         state.listings = [action.payload, ...state.listings];
         state.listingCreateStatus = DataStatus.SUCCESS;
       })
-      .addCase(createListing.rejected, (state, action) => {
+      .addCase(create.rejected, (state, action) => {
         state.listingCreateStatus = DataStatus.ERROR;
         state.error = {
           code: action.error.code,
@@ -83,17 +77,17 @@ const { reducer, actions, name } = createSlice({
         };
         notifyError(action.error.message || 'Failed to create listing');
       })
-      .addCase(updateListing.pending, (state) => {
+      .addCase(update.pending, (state) => {
         state.listingUpdateStatus = DataStatus.PENDING;
       })
-      .addCase(updateListing.fulfilled, (state, action) => {
+      .addCase(update.fulfilled, (state, action) => {
         const updatedListing = action.payload;
         state.listings = state.listings.map((listing) =>
           listing.id === updatedListing.id ? updatedListing : listing
         );
         state.listingUpdateStatus = DataStatus.SUCCESS;
       })
-      .addCase(updateListing.rejected, (state, action) => {
+      .addCase(update.rejected, (state, action) => {
         state.listingUpdateStatus = DataStatus.ERROR;
         state.error = {
           code: action.error.code,
@@ -101,17 +95,17 @@ const { reducer, actions, name } = createSlice({
         };
         notifyError(action.error.message || 'Failed to update listing');
       })
-      .addCase(deleteListing.pending, (state) => {
+      .addCase(deleteById.pending, (state) => {
         state.listingDeleteStatus = DataStatus.PENDING;
       })
-      .addCase(deleteListing.fulfilled, (state, action) => {
+      .addCase(deleteById.fulfilled, (state, action) => {
         const deletedListingId = action.meta.arg;
         state.listings = state.listings.filter(
           (listing) => listing.id.toString() !== deletedListingId
         );
         state.listingUpdateStatus = DataStatus.SUCCESS;
       })
-      .addCase(deleteListing.rejected, (state, action) => {
+      .addCase(deleteById.rejected, (state, action) => {
         state.listingDeleteStatus = DataStatus.ERROR;
         state.error = {
           code: action.error.code,

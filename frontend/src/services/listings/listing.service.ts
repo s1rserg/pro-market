@@ -2,9 +2,10 @@ import { ApiPath, ContentType } from '~/common/enums/enums';
 import { Http } from '../http/http.service';
 import { getToken } from '~/utils/auth';
 import {
-  createListingRequestDto,
+  GetAllRequestDto,
+  ListingCreateRequestDto,
   ListingResponseDto,
-  updateListingRequestDto,
+  ListingUpdateRequestDto,
 } from '~/common/types/types';
 
 type Constructor = {
@@ -20,7 +21,7 @@ class Listings {
   constructor({ baseUrl, http }: Constructor) {
     this.baseUrl = baseUrl;
     this.http = http;
-    this.basePath = ApiPath.LISTINGS;
+    this.basePath = ApiPath.SKILLS;
   }
 
   public getById(id: string): Promise<ListingResponseDto> {
@@ -31,15 +32,20 @@ class Listings {
     });
   }
 
-  public getAll(): Promise<ListingResponseDto[]> {
+  public getAll(query: GetAllRequestDto): Promise<ListingResponseDto[]> {
     const token = getToken();
     return this.http.load(this.getUrl(), {
       method: 'GET',
+      query: {
+        name: query.name,
+        page: String(query.page),
+        pageSize: String(query.pageSize),
+      },
       token,
     });
   }
 
-  public create(data: createListingRequestDto): Promise<ListingResponseDto> {
+  public create(data: ListingCreateRequestDto): Promise<ListingResponseDto> {
     const token = getToken();
     return this.http.load(this.getUrl(), {
       method: 'POST',
@@ -51,7 +57,7 @@ class Listings {
 
   public update(
     id: string,
-    data: updateListingRequestDto
+    data: ListingUpdateRequestDto
   ): Promise<ListingResponseDto> {
     const token = getToken();
     return this.http.load(this.getUrl(`/${id}`), {

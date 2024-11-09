@@ -6,6 +6,7 @@ import { NotFound } from '~/pages/not-found/not-found';
 import { UserDto } from '~/common/types/types';
 import { Auth } from '~/pages/auth/auth';
 import { Main } from '~/pages/main/main';
+import { Listings } from '~/pages/listings/listings';
 
 interface RouterConfigProps {
   user: UserDto | null;
@@ -45,6 +46,16 @@ export const createRoutes = ({
             user={user}
             authChecked={authChecked}
             element={<Main />}
+          />
+        ),
+      },
+      {
+        path: AppPath.LISTINGS,
+        element: (
+          <ProtectedRoute
+            user={user}
+            authChecked={authChecked}
+            element={<Listings />}
           />
         ),
       },

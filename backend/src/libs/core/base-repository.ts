@@ -11,8 +11,8 @@ export abstract class BaseRepository<T extends Document> {
     return this.model.findById(id).exec();
   }
 
-  public async findAll(): Promise<T[]> {
-    return this.model.find().exec();
+  public async findAll(filter = {}, skip = 0, limit = 10): Promise<T[]> {
+    return this.model.find(filter).skip(skip).limit(limit).exec();
   }
 
   public async update(id: string, item: Partial<T>): Promise<T | null> {

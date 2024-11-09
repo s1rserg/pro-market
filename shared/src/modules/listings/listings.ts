@@ -7,14 +7,13 @@ const availabilitySchema = z.object({
   endTime: z.string().regex(/^\d{2}:\d{2}$/),
 });
 
-export const createListingRequestSchema = z.object({
+export const ListingCreateRequestSchema = z.object({
   name: z.string().min(3).max(50),
   description: z.string().min(10).max(500),
   category: z.string(),
   subcategory: z.string(),
   filters: z.array(z.string()).optional(),
   images: z.array(z.string().url()).optional(),
-  creator: z.instanceof(Types.ObjectId),
   pricePerSession: z.number().min(0),
   lengthOfSession: z.number().min(0),
   availability: z.array(availabilitySchema),
@@ -23,19 +22,19 @@ export const createListingRequestSchema = z.object({
   ratingCounts: z.number().optional(),
 });
 
-export const createListingResponseSchema = createListingRequestSchema.extend({
+export const ListingCreateResponseSchema = ListingCreateRequestSchema.extend({
   id: z.instanceof(Types.ObjectId),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
 
-export type ListingResponseDto = z.infer<typeof createListingResponseSchema>;
+export type ListingResponseDto = z.infer<typeof ListingCreateResponseSchema>;
 
-export const updateListingRequestSchema = createListingRequestSchema.partial();
+export const ListingUpdateRequestSchema = ListingCreateRequestSchema.partial();
 
-export type createListingRequestDto = z.infer<
-  typeof createListingRequestSchema
+export type ListingCreateRequestDto = z.infer<
+  typeof ListingCreateRequestSchema
 >;
-export type updateListingRequestDto = z.infer<
-  typeof updateListingRequestSchema
+export type ListingUpdateRequestDto = z.infer<
+  typeof ListingUpdateRequestSchema
 >;

@@ -1,3 +1,4 @@
+import { GetAllRequestDto } from 'shared/src';
 import { IListing } from './listing.model';
 import { ListingRepository } from './listing.repository';
 
@@ -12,8 +13,11 @@ export class ListingService {
     return this.repository.create(skillData);
   }
 
-  async getAll() {
-    return this.repository.findAll();
+  async getAll({ page, pageSize, name }: GetAllRequestDto) {
+    const skip = (page - 1) * pageSize;
+    const filter = name ? { name: { $regex: name, $options: 'i' } } : {};
+
+    return this.repository.findAll(filter, skip, pageSize);
   }
 
   async getById(skillId: string) {

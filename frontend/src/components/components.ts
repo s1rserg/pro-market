@@ -9,3 +9,8 @@ export * from './app/app';
 export * from './popover/popover';
 export * from './avatar/avatar';
 export * from './search/search';
+export * from './modal/modal';
+export * from './confirmation-modal/confirmation-modal';
+export * from './menu/menu';
+export * from './menu-item/menu-item';
+export * from './page-layout/page-layout';

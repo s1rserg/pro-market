@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { ListingService } from './listing.service';
 import { BaseController } from '~/libs/core/base-controller';
-import { createListingRequestSchema } from '~/libs/common/common';
+import {
+  GetAllRequestDto,
+  ListingCreateRequestSchema,
+} from '~/libs/common/common';
+import { AuthRequest } from '~/libs/middleware/auth.middleware';
 
 class ListingController extends BaseController {
   private listingService = new ListingService();
@@ -11,11 +15,13 @@ class ListingController extends BaseController {
       req,
       res,
       next,
-      async (req: Request, res: Response) => {
-        const listing = await this.listingService.create(req.body);
+      async (req: AuthRequest, res: Response) => {
+        const userId = req.user?.id as string;
+        const listingData = { ...req.body, userId };
+        const listing = await this.listingService.create(listingData);
         this.sendResponse(res, listing, 201);
       },
-      createListingRequestSchema
+      ListingCreateRequestSchema
     );
 
   public getById = (req: Request, res: Response, next: NextFunction) =>
@@ -30,7 +36,17 @@ class ListingController extends BaseController {
 
   public getAll = (req: Request, res: Response, next: NextFunction) =>
     this.handleRequest(req, res, next, async (req: Request, res: Response) => {
-      const listings = await this.listingService.getAll();
+      const {
+        page = 1,
+        pageSize = 10,
+        name,
+      } = req.query as unknown as GetAllRequestDto;
+
+      const listings = await this.listingService.getAll({
+        page,
+        pageSize,
+        name,
+      });
       this.sendResponse(res, listings, 200);
     });
 
