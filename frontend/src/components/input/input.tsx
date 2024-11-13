@@ -22,7 +22,8 @@ type Properties<T extends FieldValues> = {
   placeholder?: string;
   rightIcon?: JSX.Element;
   rowsCount?: number;
-  type?: 'email' | 'password' | 'search' | 'text';
+  type?: 'email' | 'password' | 'search' | 'text' | 'file';
+  onImageChange?: (file: File | null) => void; // callback for handling image selection
 };
 
 const Input = <T extends FieldValues>({
@@ -39,6 +40,7 @@ const Input = <T extends FieldValues>({
   rightIcon,
   rowsCount,
   type = 'text',
+  onImageChange,
 }: Properties<T>): JSX.Element => {
   const { field } = useController({ control, name });
   const error = errors ? errors[name]?.message : undefined;
@@ -46,12 +48,20 @@ const Input = <T extends FieldValues>({
   const hasLeftIcon = Boolean(leftIcon);
   const hasRightIcon = Boolean(rightIcon);
   const isTextArea = Boolean(rowsCount);
+  const isFileInput = type === 'file';
+
   const inputClassNames = getValidClassNames(
     styles['input-field'],
     isTextArea && styles['input-textarea'],
     hasLeftIcon && styles['with-left-icon'],
     hasRightIcon && styles['with-right-icon']
   );
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    onImageChange?.(file);
+    field.onChange(file);
+  };
 
   return (
     <label className={styles['input-label']}>
@@ -88,15 +98,15 @@ const Input = <T extends FieldValues>({
           />
         ) : (
           <input
-            autoComplete={autoComplete}
+            autoComplete={isFileInput ? undefined : autoComplete}
             className={inputClassNames}
             disabled={isDisabled}
             name={field.name}
-            onChange={field.onChange}
+            onChange={isFileInput ? handleFileChange : field.onChange}
             placeholder={placeholder}
             readOnly={isReadOnly}
             type={type}
-            value={field.value}
+            value={isFileInput ? undefined : field.value}
           />
         )}
 
