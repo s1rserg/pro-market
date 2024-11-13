@@ -7,18 +7,19 @@ export interface ICategory extends Document {
 
 const CategorySchema = new Schema<ICategory>({
   name: { type: String, required: true },
+  key: { type: String, required: true },
 });
 
 export const Category = mongoose.model<ICategory>('Category', CategorySchema);
 
 export interface ISubcategory extends Document {
   name: string;
-  category: mongoose.Types.ObjectId;
+  key: string;
 }
 
 const SubcategorySchema = new Schema<ISubcategory>({
   name: { type: String, required: true },
-  category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+  key: { type: String, required: true },
 });
 
 export const Subcategory = mongoose.model<ISubcategory>(
