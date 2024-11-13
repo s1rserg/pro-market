@@ -12,6 +12,9 @@ const ApiPath = {
 
   // Images routes
   IMAGES: '/images',
+
+  // Attributes routes
+  ATTRIBUTES: '/attributes',
 } as const;
 
 export { ApiPath };
