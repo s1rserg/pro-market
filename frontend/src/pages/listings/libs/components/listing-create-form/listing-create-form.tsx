@@ -3,28 +3,62 @@ import {
   ListingCreateRequestSchema,
 } from '~/common/types/types.js';
 import { DEFAULT_LISTING_CREATE_PAYLOAD } from './libs/constants/constants.js';
-import { useAppForm } from '~/hooks/hooks.js';
+import { useAppDispatch, useAppForm, useAppSelector } from '~/hooks/hooks.js';
 import { useWatch } from 'react-hook-form';
-import { useEffect } from 'react';
-import { Button, Input } from '~/components/components.js';
+import { useEffect, useMemo } from 'react';
+import {
+  Button,
+  ImageInput,
+  Input,
+  Loader,
+  Select,
+} from '~/components/components.js';
 import styles from './styles.module.css';
+import { getOptions } from './libs/helpers/helpers.js';
+import { actions as attributeActions } from '~/store/attributes/attributes.js';
+import { DataStatus } from '~/common/enums/enums.js';
 
 type Properties = {
   onSubmit: (payload: ListingCreateRequestDto) => void;
 };
 
 const ListingCreateForm = ({ onSubmit }: Properties): JSX.Element => {
-  const { control, errors, handleSubmit, handleTrigger } =
-    useAppForm<ListingCreateRequestDto>({
+  const dispatch = useAppDispatch();
+
+  const {
+    categoriesStatus,
+    subcategoriesStatus,
+    filtersStatus,
+    categories,
+    subcategories,
+    filters,
+  } = useAppSelector(({ attributes }) => attributes);
+
+  useEffect(() => {
+    void dispatch(attributeActions.getAllCategories());
+    void dispatch(attributeActions.getAllSubcategories());
+    void dispatch(attributeActions.getAllFilters());
+  }, [dispatch]);
+
+  const { control, errors, handleSubmit } = useAppForm<ListingCreateRequestDto>(
+    {
       defaultValues: DEFAULT_LISTING_CREATE_PAYLOAD,
       validationSchema: ListingCreateRequestSchema,
-    });
+    }
+  );
 
   const descriptionValue = useWatch({
     control,
     defaultValue: '',
     name: 'description',
   });
+
+  const imagesValue = useWatch({
+    control,
+    defaultValue: [],
+    name: 'images',
+  });
+  console.log('imagesValue', imagesValue);
 
   const isDescriptionCounterShown = !errors['description']?.message;
 
@@ -34,9 +68,26 @@ const ListingCreateForm = ({ onSubmit }: Properties): JSX.Element => {
     })(event_);
   };
 
-  useEffect(() => {
-    void handleTrigger('description');
-  }, [descriptionValue, handleTrigger]);
+  const categoryOptions = useMemo(() => getOptions(categories), [categories]);
+
+  const subcategoryOptions = useMemo(
+    () => getOptions(subcategories),
+    [subcategories]
+  );
+
+  const filterOptions = useMemo(() => getOptions(filters), [filters]);
+
+  const isLoading =
+    categoriesStatus === DataStatus.IDLE ||
+    categoriesStatus === DataStatus.PENDING ||
+    subcategoriesStatus === DataStatus.IDLE ||
+    subcategoriesStatus === DataStatus.PENDING ||
+    filtersStatus === DataStatus.IDLE ||
+    filtersStatus === DataStatus.PENDING;
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <form className={styles['form-wrapper']} onSubmit={handleFormSubmit}>
@@ -61,7 +112,39 @@ const ListingCreateForm = ({ onSubmit }: Properties): JSX.Element => {
           </span>
         )}
       </div>
-
+      <div className={styles['attributes-wrapper']}>
+        <Select
+          control={control}
+          label="Category"
+          name="category"
+          options={categoryOptions}
+          placeholder="Choose category"
+        />
+        <Select
+          control={control}
+          label="Subcategory"
+          name="subcategory"
+          options={subcategoryOptions}
+          placeholder="Choose subcategory"
+        />
+        <Select
+          control={control}
+          label="Filters"
+          name="filters"
+          options={filterOptions}
+          placeholder="Choose filters"
+          isMulti
+        />
+      </div>
+      <div className={styles['images-wrapper']}>
+        <ImageInput
+          placeholder="Choose images"
+          name="images"
+          label="Upload Images"
+          control={control}
+          errors={errors}
+        />
+      </div>
       <div className={styles['button-wrapper']}>
         <Button label="Create" type="submit" />
       </div>

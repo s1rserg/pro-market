@@ -7,6 +7,7 @@ const DEFAULT_LISTING_CREATE_PAYLOAD: ListingCreateRequestDto = {
   subcategory: '',
   pricePerSession: 0,
   lengthOfSession: 0,
+  images: [],
   availability: [
     {
       day: '',
@@ -14,7 +15,6 @@ const DEFAULT_LISTING_CREATE_PAYLOAD: ListingCreateRequestDto = {
       endTime: '',
     },
   ],
-  location: '',
   rating: 0,
   ratingCounts: 0,
 };

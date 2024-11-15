@@ -17,7 +17,7 @@ export const ListingCreateRequestSchema = z.object({
   pricePerSession: z.number().min(0),
   lengthOfSession: z.number().min(0),
   availability: z.array(availabilitySchema),
-  location: z.string(),
+  // location: z.string(), TODO: Implement this
   rating: z.number().optional(),
   ratingCounts: z.number().optional(),
 });

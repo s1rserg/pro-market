@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface ICategory extends Document {
   name: string;
@@ -15,11 +15,13 @@ export const Category = mongoose.model<ICategory>('Category', CategorySchema);
 export interface ISubcategory extends Document {
   name: string;
   key: string;
+  categoryId: Types.ObjectId;
 }
 
 const SubcategorySchema = new Schema<ISubcategory>({
   name: { type: String, required: true },
   key: { type: String, required: true },
+  categoryId: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
 });
 
 export const Subcategory = mongoose.model<ISubcategory>(
