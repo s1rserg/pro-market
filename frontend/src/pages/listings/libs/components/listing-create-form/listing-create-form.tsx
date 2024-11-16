@@ -2,12 +2,16 @@ import {
   ListingCreateRequestDto,
   ListingCreateRequestSchema,
 } from '~/common/types/types.js';
-import { DEFAULT_LISTING_CREATE_PAYLOAD } from './libs/constants/constants.js';
+import {
+  DEFAULT_LISTING_CREATE_PAYLOAD,
+  locationOptions,
+} from './libs/constants/constants.js';
 import { useAppDispatch, useAppForm, useAppSelector } from '~/hooks/hooks.js';
 import { useWatch } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
 import {
   Button,
+  CountryCityInput,
   ImageInput,
   Input,
   Loader,
@@ -53,17 +57,19 @@ const ListingCreateForm = ({ onSubmit }: Properties): JSX.Element => {
     name: 'description',
   });
 
-  const imagesValue = useWatch({
+  const locationValue = useWatch({
     control,
-    defaultValue: [],
-    name: 'images',
+    defaultValue: '',
+    name: 'location',
   });
-  console.log('imagesValue', imagesValue);
 
   const isDescriptionCounterShown = !errors['description']?.message;
+  const isCountryCityInputShown = locationValue === locationOptions[0].value;
 
   const handleFormSubmit = (event_: React.BaseSyntheticEvent): void => {
-    void handleSubmit((formData: ListingCreateRequestDto) => {
+    console.log('clicked');
+    void handleSubmit(async (formData: ListingCreateRequestDto) => {
+      console.log(formData);
       onSubmit(formData);
     })(event_);
   };
@@ -145,6 +151,39 @@ const ListingCreateForm = ({ onSubmit }: Properties): JSX.Element => {
           errors={errors}
         />
       </div>
+      <div className={styles['location-wrapper']}>
+        <Select
+          control={control}
+          label="Location"
+          name="location"
+          options={locationOptions}
+          placeholder="Choose location"
+        />
+        {isCountryCityInputShown && (
+          <CountryCityInput
+            control={control}
+            cityName="city"
+            countryName="country"
+            cityLabel="City"
+            countryLabel="Country"
+            errors={errors}
+          />
+        )}
+      </div>
+      <Input
+        control={control}
+        errors={errors}
+        label="Price per session, USD"
+        name="pricePerSession"
+        type="number"
+      />
+      <Input
+        control={control}
+        errors={errors}
+        label="Length of session, min"
+        name="lengthOfSession"
+        type="number"
+      />
       <div className={styles['button-wrapper']}>
         <Button label="Create" type="submit" />
       </div>

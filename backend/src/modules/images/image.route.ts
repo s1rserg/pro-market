@@ -11,6 +11,5 @@ const upload = multer({ dest: 'uploads/' });
 router.post('/', authMiddleware, upload.single('image'), (req, res, next) =>
   imageController.upload(req, res, next)
 );
-router.get('/:id', (req, res, next) => imageController.getById(req, res, next));
 
 export default router;

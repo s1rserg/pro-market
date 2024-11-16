@@ -22,7 +22,7 @@ type Properties<T extends FieldValues> = {
   placeholder?: string;
   rightIcon?: JSX.Element;
   rowsCount?: number;
-  type?: 'email' | 'password' | 'search' | 'text' | 'file';
+  type?: 'email' | 'password' | 'search' | 'text' | 'file' | 'number';
   onImageChange?: (file: File | null) => void; // callback for handling image selection
 };
 
@@ -49,6 +49,7 @@ const Input = <T extends FieldValues>({
   const hasRightIcon = Boolean(rightIcon);
   const isTextArea = Boolean(rowsCount);
   const isFileInput = type === 'file';
+  const isNumberInput = type === 'number';
 
   const inputClassNames = getValidClassNames(
     styles['input-field'],
@@ -61,6 +62,16 @@ const Input = <T extends FieldValues>({
     const file = e.target.files ? e.target.files[0] : null;
     onImageChange?.(file);
     field.onChange(file);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (isNumberInput) {
+      field.onChange(e.target.value ? Number(e.target.value) : '');
+    } else {
+      field.onChange(e.target.value);
+    }
   };
 
   return (
@@ -102,7 +113,7 @@ const Input = <T extends FieldValues>({
             className={inputClassNames}
             disabled={isDisabled}
             name={field.name}
-            onChange={isFileInput ? handleFileChange : field.onChange}
+            onChange={isFileInput ? handleFileChange : handleChange}
             placeholder={placeholder}
             readOnly={isReadOnly}
             type={type}

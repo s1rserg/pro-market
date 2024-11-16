@@ -127,7 +127,7 @@ const Listings = (): JSX.Element => {
 
   const handleEditClick = useCallback(
     (listing: ListingResponseDto) => {
-      setListingToModifyId(listing.id.toString());
+      setListingToModifyId(listing._id);
       handleEditModalOpen();
     },
     [handleEditModalOpen]
@@ -135,7 +135,7 @@ const Listings = (): JSX.Element => {
 
   const handleDeleteClick = useCallback(
     (listing: ListingResponseDto) => {
-      setListingToModifyId(listing.id.toString());
+      setListingToModifyId(listing._id);
       handleDeleteConfirmationModalOpen();
     },
     [handleDeleteConfirmationModalOpen]
@@ -194,7 +194,7 @@ const Listings = (): JSX.Element => {
           {hasListings ? (
             listings.map((listing) => (
               <ListingCard
-                key={listing.id.toString()}
+                key={listing._id}
                 onDelete={handleDeleteClick}
                 onEdit={handleEditClick}
                 listing={listing}

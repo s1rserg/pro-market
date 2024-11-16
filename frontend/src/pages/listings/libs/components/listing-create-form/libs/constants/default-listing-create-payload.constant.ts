@@ -5,18 +5,13 @@ const DEFAULT_LISTING_CREATE_PAYLOAD: ListingCreateRequestDto = {
   description: '',
   category: '',
   subcategory: '',
-  pricePerSession: 0,
-  lengthOfSession: 0,
+  pricePerSession: '0',
+  lengthOfSession: '0',
   images: [],
-  availability: [
-    {
-      day: '',
-      startTime: '',
-      endTime: '',
-    },
-  ],
-  rating: 0,
-  ratingCounts: 0,
+  filters: [],
+  location: '',
+  country: '',
+  city: '',
 };
 
 export { DEFAULT_LISTING_CREATE_PAYLOAD };

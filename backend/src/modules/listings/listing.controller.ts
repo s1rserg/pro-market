@@ -6,9 +6,12 @@ import {
   ListingCreateRequestSchema,
 } from '~/libs/common/common';
 import { AuthRequest } from '~/libs/middleware/auth.middleware';
+import { ImageService } from '../images/image.service';
+import { Types } from 'mongoose';
 
 class ListingController extends BaseController {
   private listingService = new ListingService();
+  private imageService = new ImageService();
 
   public create = (req: Request, res: Response, next: NextFunction) =>
     this.handleRequest(
@@ -17,8 +20,17 @@ class ListingController extends BaseController {
       next,
       async (req: AuthRequest, res: Response) => {
         const userId = req.user?.id as string;
-        const listingData = { ...req.body, userId };
-        const listing = await this.listingService.create(listingData);
+        const files = req.files as Express.Multer.File[];
+        const imageUrls = await Promise.all(
+          files.map((file) =>
+            this.imageService.upload(file.path, file.originalname)
+          )
+        );
+        const listingData = { ...req.body, userId, images: imageUrls };
+        const listing = await this.listingService.create(
+          listingData,
+          userId as unknown as Types.ObjectId
+        );
         this.sendResponse(res, listing, 201);
       },
       ListingCreateRequestSchema

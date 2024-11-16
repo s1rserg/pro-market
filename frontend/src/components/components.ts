@@ -17,3 +17,4 @@ export * from './page-layout/page-layout';
 export * from './date-time-input/date-time-input';
 export * from './select/select';
 export * from './image-input/image.input';
+export * from './country-city-input/country-city-input';

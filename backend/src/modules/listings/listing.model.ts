@@ -10,12 +10,9 @@ export interface IListing extends Document {
   creator: mongoose.Types.ObjectId;
   pricePerSession: number;
   lengthOfSession: number;
-  availability: {
-    day: string;
-    startTime: string;
-    endTime: string;
-  }[];
   location: string;
+  country: string;
+  city: string;
   rating: number;
   ratingCounts: number;
 }
@@ -30,14 +27,9 @@ const ListingSchema = new Schema<IListing>({
   creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   pricePerSession: { type: Number, required: true },
   lengthOfSession: { type: Number, required: true },
-  availability: [
-    {
-      day: { type: String, required: true },
-      startTime: { type: String, required: true },
-      endTime: { type: String, required: true },
-    },
-  ],
-  location: { type: String, required: true },
+  location: { type: String },
+  country: { type: String },
+  city: { type: String },
   rating: { type: Number, default: 0 },
   ratingCounts: { type: Number, default: 0 },
 });

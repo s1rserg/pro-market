@@ -12,7 +12,16 @@ export abstract class BaseController {
   ) {
     try {
       if (schema) {
-        req.body = this.validate(schema, req.body);
+        if (typeof req.body === 'string') {
+          const parsedBody = JSON.parse(req.body);
+
+          const { images, ...jsonFields } = parsedBody;
+
+          req.body = {
+            ...this.validate(schema, jsonFields),
+            images,
+          };
+        }
       }
 
       await handler(req, res);

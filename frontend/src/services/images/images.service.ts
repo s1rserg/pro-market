@@ -1,4 +1,4 @@
-import { ApiPath, ContentType } from '~/common/enums/enums';
+import { ApiPath } from '~/common/enums/enums';
 import { Http } from '../http/http.service';
 import { getToken } from '~/utils/auth';
 
@@ -21,11 +21,10 @@ class Images {
   public upload(imageFile: File): Promise<string> {
     const token = getToken();
     const formData = new FormData();
-    formData.append('file', imageFile);
+    formData.append('image', imageFile);
 
     return this.http.load(this.getUrl(), {
       method: 'POST',
-      contentType: ContentType.FORM_DATA,
       payload: formData,
       token,
     });

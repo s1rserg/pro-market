@@ -18,7 +18,7 @@ const ListingCard = ({
   listing,
 }: Properties): JSX.Element => {
   const listingRoute = configureString(AppPath.SKILL, {
-    id: listing.id.toString(),
+    id: listing._id,
   });
 
   const handleEditClick = () => {

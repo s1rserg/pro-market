@@ -47,10 +47,24 @@ class Listings {
 
   public create(data: ListingCreateRequestDto): Promise<ListingResponseDto> {
     const token = getToken();
+
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (key != 'filters') {
+        formData.append(key, value as string);
+      } else {
+        formData.append(key, JSON.stringify(value));
+      }
+    });
+    if (data.images) {
+      data.images.forEach((file) => {
+        formData.append('images', file);
+      });
+    }
+
     return this.http.load(this.getUrl(), {
       method: 'POST',
-      contentType: ContentType.JSON,
-      payload: JSON.stringify(data),
+      payload: formData,
       token,
     });
   }

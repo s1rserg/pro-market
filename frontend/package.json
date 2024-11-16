@@ -10,6 +10,7 @@
     "lint:fix": "eslint --fix \"src/**/*.{js,ts}\""
   },
   "dependencies": {
+    "country-state-city": "^3.2.1",
     "debounce": "^2.2.0",
     "react": "^18.3.1",
     "react-datepicker": "^7.5.0",

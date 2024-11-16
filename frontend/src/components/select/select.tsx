@@ -25,6 +25,7 @@ type Properties<TFieldValues extends FieldValues, TOptionValue> = {
   name: FieldPath<TFieldValues>;
   options: SelectOption<TOptionValue>[];
   placeholder?: string;
+  isDisabled?: boolean;
   size?: 'default' | 'small';
 };
 
@@ -39,6 +40,7 @@ const Select = <TFieldValues extends FieldValues, TOptionValue>({
   name,
   options,
   placeholder,
+  isDisabled = false,
   size = 'default',
 }: Properties<TFieldValues, TOptionValue>): JSX.Element => {
   const { field } = useController({
@@ -131,6 +133,7 @@ const Select = <TFieldValues extends FieldValues, TOptionValue>({
         onChange={handleChange}
         options={options as PathValue<TFieldValues, Path<TFieldValues>>}
         placeholder={placeholder}
+        isDisabled={isDisabled}
         styles={{
           control: (base) => ({
             ...base,

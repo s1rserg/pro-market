@@ -21,16 +21,6 @@ class ImageController extends BaseController {
       fs.unlinkSync(req.file.path);
       this.sendResponse(res, { image }, 201);
     });
-
-  public getById = (req: Request, res: Response, next: NextFunction) =>
-    this.handleRequest(req, res, next, async (req: Request, res: Response) => {
-      const image = await imageService.getById(req.params.id);
-      if (!image) {
-        this.sendResponse(res, { error: 'Image not found' }, 404);
-        return;
-      }
-      res.json(image);
-    });
 }
 
 export { ImageController };
