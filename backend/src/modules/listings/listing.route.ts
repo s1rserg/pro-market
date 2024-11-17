@@ -17,7 +17,12 @@ router.post(
 );
 router.get('/:id', authMiddleware, listingController.getById);
 router.get('/', authMiddleware, listingController.getAll);
-router.patch('/:id', authMiddleware, listingController.update);
+router.patch(
+  '/:id',
+  authMiddleware,
+  upload.array('images', 10),
+  listingController.update
+);
 router.delete('/:id', authMiddleware, listingController.delete);
 
 export default router;

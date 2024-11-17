@@ -7,9 +7,21 @@ export const ListingCreateRequestSchema = z.object({
   category: z.string().min(1),
   subcategory: z.string().min(1),
   filters: z.array(z.string()).optional(),
-  images: z.array(z.instanceof(File)).optional(),
-  pricePerSession: z.string().min(0),
-  lengthOfSession: z.string().min(0),
+  images: z.array(z.union([z.instanceof(File), z.string().url()])).optional(),
+  pricePerSession: z.union([z.string(), z.number()]).refine(
+    (value) => {
+      const num = typeof value === 'string' ? parseFloat(value) : value;
+      return num >= 0;
+    },
+    { message: 'Must be a positive number' }
+  ),
+  lengthOfSession: z.union([z.string(), z.number()]).refine(
+    (value) => {
+      const num = typeof value === 'string' ? parseFloat(value) : value;
+      return num >= 0;
+    },
+    { message: 'Must be a positive number' }
+  ),
   location: z.string(),
   country: z.string().optional(),
   city: z.string().optional(),

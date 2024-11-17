@@ -21,7 +21,6 @@ const ListingMenu = ({ onDelete, onEdit }: Properties): JSX.Element => {
 
   return (
     <>
-      (
       <Menu isOpened={isOpened} onClose={onClose} onOpen={onOpen}>
         <MenuItem iconName="pencil" label="Edit" onClick={handleEditClick} />
         <MenuItem
@@ -31,7 +30,6 @@ const ListingMenu = ({ onDelete, onEdit }: Properties): JSX.Element => {
           variant="danger"
         />
       </Menu>
-      )
     </>
   );
 };

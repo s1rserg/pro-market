@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
 
@@ -41,7 +40,11 @@ export abstract class BaseController {
     }
   }
 
-  protected sendResponse(res: Response, data: any, statusCode: number = 200) {
+  protected sendResponse(
+    res: Response,
+    data: unknown,
+    statusCode: number = 200
+  ) {
     res.status(statusCode).json(data);
   }
 }

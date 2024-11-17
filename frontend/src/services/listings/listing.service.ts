@@ -1,4 +1,4 @@
-import { ApiPath, ContentType } from '~/common/enums/enums';
+import { ApiPath } from '~/common/enums/enums';
 import { Http } from '../http/http.service';
 import { getToken } from '~/utils/auth';
 import {
@@ -74,10 +74,23 @@ class Listings {
     data: ListingUpdateRequestDto
   ): Promise<ListingResponseDto> {
     const token = getToken();
+
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (key != 'filters') {
+        formData.append(key, value as string);
+      } else {
+        formData.append(key, JSON.stringify(value));
+      }
+    });
+    if (data.images) {
+      data.images.forEach((file) => {
+        formData.append('images', file);
+      });
+    }
     return this.http.load(this.getUrl(`/${id}`), {
       method: 'PATCH',
-      contentType: ContentType.JSON,
-      payload: JSON.stringify(data),
+      payload: formData,
       token,
     });
   }

@@ -67,9 +67,7 @@ const ListingCreateForm = ({ onSubmit }: Properties): JSX.Element => {
   const isCountryCityInputShown = locationValue === locationOptions[0].value;
 
   const handleFormSubmit = (event_: React.BaseSyntheticEvent): void => {
-    console.log('clicked');
     void handleSubmit(async (formData: ListingCreateRequestDto) => {
-      console.log(formData);
       onSubmit(formData);
     })(event_);
   };

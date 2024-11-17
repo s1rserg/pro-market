@@ -83,7 +83,7 @@ const { reducer, actions, name } = createSlice({
       .addCase(update.fulfilled, (state, action) => {
         const updatedListing = action.payload;
         state.listings = state.listings.map((listing) =>
-          listing.id === updatedListing.id ? updatedListing : listing
+          listing._id === updatedListing._id ? updatedListing : listing
         );
         state.listingUpdateStatus = DataStatus.SUCCESS;
       })
@@ -101,7 +101,7 @@ const { reducer, actions, name } = createSlice({
       .addCase(deleteById.fulfilled, (state, action) => {
         const deletedListingId = action.meta.arg;
         state.listings = state.listings.filter(
-          (listing) => listing.id.toString() !== deletedListingId
+          (listing) => listing._id.toString() !== deletedListingId
         );
         state.listingUpdateStatus = DataStatus.SUCCESS;
       })
