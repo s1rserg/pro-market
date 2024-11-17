@@ -118,6 +118,7 @@ const ListingUpdateForm = ({ onSubmit, listing }: Properties): JSX.Element => {
       <div className={styles['attributes-wrapper']}>
         <Select
           control={control}
+          errors={errors}
           label="Category"
           name="category"
           options={categoryOptions}
@@ -125,6 +126,7 @@ const ListingUpdateForm = ({ onSubmit, listing }: Properties): JSX.Element => {
         />
         <Select
           control={control}
+          errors={errors}
           label="Subcategory"
           name="subcategory"
           options={subcategoryOptions}
@@ -132,6 +134,7 @@ const ListingUpdateForm = ({ onSubmit, listing }: Properties): JSX.Element => {
         />
         <Select
           control={control}
+          errors={errors}
           label="Filters"
           name="filters"
           options={filterOptions}
@@ -151,6 +154,7 @@ const ListingUpdateForm = ({ onSubmit, listing }: Properties): JSX.Element => {
       <div className={styles['location-wrapper']}>
         <Select
           control={control}
+          errors={errors}
           label="Location"
           name="location"
           options={locationOptions}

@@ -12,7 +12,12 @@ export abstract class BaseRepository<T extends Document> {
   }
 
   public async findAll(filter = {}, skip = 0, limit = 10): Promise<T[]> {
-    return this.model.find(filter).skip(skip).limit(limit).exec();
+    return this.model
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
   }
 
   public async update(id: string, item: Partial<T>): Promise<T | null> {

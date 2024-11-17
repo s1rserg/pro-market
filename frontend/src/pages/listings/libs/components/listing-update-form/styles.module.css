@@ -19,6 +19,24 @@
   color: var(--color-text-secondary);
 }
 
+.attributes-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.images-wrapper {
+  width: 100%;
+}
+
+.location-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
 .button-wrapper {
   min-width: 150px;
 }

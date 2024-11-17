@@ -1,4 +1,5 @@
 import {
+  FieldErrors,
   useController,
   type Control,
   type FieldPath,
@@ -17,6 +18,7 @@ import { useCallback, useMemo } from 'react';
 type Properties<TFieldValues extends FieldValues, TOptionValue> = {
   background?: 'primary' | 'secondary';
   control: Control<TFieldValues, null>;
+  errors?: FieldErrors<TFieldValues>;
   isClearable?: boolean;
   isLabelHidden?: boolean;
   isMulti?: boolean;
@@ -32,6 +34,7 @@ type Properties<TFieldValues extends FieldValues, TOptionValue> = {
 const Select = <TFieldValues extends FieldValues, TOptionValue>({
   background = 'secondary',
   control,
+  errors,
   isClearable = false,
   isLabelHidden = false,
   isMulti = false,
@@ -48,6 +51,8 @@ const Select = <TFieldValues extends FieldValues, TOptionValue>({
     name,
   });
 
+  const error = errors ? errors[name]?.message : undefined;
+  const hasError = Boolean(error);
   const isBackgroundPrimary = background === 'primary';
   const isSmall = size === 'small';
   const labelClassName = getValidClassNames(
@@ -152,6 +157,9 @@ const Select = <TFieldValues extends FieldValues, TOptionValue>({
         unstyled
         value={value}
       />
+      {hasError && (
+        <span className={styles['input-error']}>{error as string}</span>
+      )}
     </label>
   );
 };

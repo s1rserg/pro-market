@@ -1,39 +1,50 @@
 import { z } from 'zod';
-import { Types } from 'mongoose';
 
-export const ListingCreateRequestSchema = z.object({
-  name: z.string().min(3).max(50),
-  description: z.string().min(10).max(500),
-  category: z.string().min(1),
-  subcategory: z.string().min(1),
-  filters: z.array(z.string()).optional(),
-  images: z.array(z.union([z.instanceof(File), z.string().url()])).optional(),
-  pricePerSession: z.union([z.string(), z.number()]).refine(
-    (value) => {
-      const num = typeof value === 'string' ? parseFloat(value) : value;
-      return num >= 0;
+export const ListingCreateRequestSchema = z
+  .object({
+    name: z
+      .string()
+      .min(3, { message: 'Name must be at least 3 characters long' })
+      .max(50, { message: 'Name must be at most 50 characters long' }),
+    description: z
+      .string()
+      .min(10, { message: 'Description must be at least 10 characters long' })
+      .max(500, { message: 'Description must be at most 500 characters long' }),
+    category: z.string().min(1, { message: 'Category is required' }),
+    subcategory: z.string().min(1, { message: 'Subcategory is required' }),
+    filters: z.array(z.string()).optional(),
+    images: z.array(z.union([z.instanceof(File), z.string().url()])).optional(),
+    pricePerSession: z.union([z.string(), z.number()]).refine(
+      (value) => {
+        const num = typeof value === 'string' ? parseFloat(value) : value;
+        return !isNaN(num) && num >= 0;
+      },
+      { message: 'Price per session must be a positive number' }
+    ),
+    lengthOfSession: z.union([z.string(), z.number()]).refine(
+      (value) => {
+        const num = typeof value === 'string' ? parseFloat(value) : value;
+        return !isNaN(num) && num >= 0;
+      },
+      { message: 'Length of session must be a positive number' }
+    ),
+    location: z.string().min(1, { message: 'Location is required' }),
+    country: z.string().optional(),
+    city: z.string().optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.location === 'On-site') {
+        return !!data.country && !!data.city;
+      }
+      return true;
     },
-    { message: 'Must be a positive number' }
-  ),
-  lengthOfSession: z.union([z.string(), z.number()]).refine(
-    (value) => {
-      const num = typeof value === 'string' ? parseFloat(value) : value;
-      return num >= 0;
-    },
-    { message: 'Must be a positive number' }
-  ),
-  location: z.string(),
-  country: z.string().optional(),
-  city: z.string().optional(),
-});
-
-export const ListingCreateResponseSchema = ListingCreateRequestSchema.extend({
-  id: z.instanceof(Types.ObjectId),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  rating: z.number(),
-  ratingCounts: z.number(),
-});
+    {
+      message:
+        'When location is on-site, both country and city must be provided',
+      path: ['location'],
+    }
+  );
 
 export type ListingResponseDto = {
   name: string;
@@ -82,4 +93,4 @@ export type ListingUpdateRequestDto = {
   city?: string | undefined;
 };
 
-export const ListingUpdateRequestSchema = ListingCreateRequestSchema.partial();
+export const ListingUpdateRequestSchema = ListingCreateRequestSchema;

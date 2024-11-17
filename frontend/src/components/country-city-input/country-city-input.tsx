@@ -26,6 +26,7 @@ export const CountryCityInput = <T extends FieldValues>({
   cityName,
   cityLabel,
   countryLabel,
+  errors,
 }: Properties<T>) => {
   const [countryOptions, setCountryOptions] = useState<SelectOption<string>[]>(
     []
@@ -83,6 +84,7 @@ export const CountryCityInput = <T extends FieldValues>({
     <div className={styles['container']}>
       <Select
         control={control}
+        errors={errors}
         name={countryName}
         label={countryLabel}
         placeholder="Select a country"
@@ -92,6 +94,7 @@ export const CountryCityInput = <T extends FieldValues>({
 
       <Select
         control={control}
+        errors={errors}
         name={cityName}
         label={cityLabel}
         placeholder="Select a city"
